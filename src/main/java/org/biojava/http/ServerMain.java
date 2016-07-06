@@ -28,6 +28,7 @@ import static spark.Spark.*;
 
 public class ServerMain {
 	public static void main(String[] args) {
+		//  port(5678); <- Uncomment this if you want spark to listen to port 5678 in stead of the default 4567
 		get("/hello", (request, response) -> "Hello World!");
 	}
 }
