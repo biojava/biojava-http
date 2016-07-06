@@ -19,16 +19,16 @@
 	</properties>
 
 	<repositories>
-	    <repository>
-	      <id>oss.sonatype.org-snapshot</id>
-	      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-	      <releases>
-	        <enabled>false</enabled>
-	      </releases>
-	      <snapshots>
-	        <enabled>true</enabled>
-	      </snapshots>
-	    </repository>
+		<repository>
+			<id>oss.sonatype.org-snapshot</id>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -84,6 +84,11 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.sparkjava</groupId>
+			<artifactId>spark-template-handlebars</artifactId>
+			<version>2.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>
