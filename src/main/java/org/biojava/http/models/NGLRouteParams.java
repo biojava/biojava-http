@@ -22,26 +22,23 @@
  *
  */
 
-package org.biojava.http;
+package org.biojava.http.models;
 
-import static spark.Spark.*;
 
-import org.biojava.http.routes.MMCIFRoute;
-import org.biojava.http.routes.NGLRoute;
-import org.biojava.http.routes.PDBRoute;
+public class NGLRouteParams extends NGLParams{
+	private String structureId;
 
-import spark.template.handlebars.HandlebarsTemplateEngine;
-
-public class ServerMain {
-	public static void main(String[] args) {
-		//  port(4567);
-		
-		get("/", (r,r2) -> "BioJava HTTP");
-
-		get(BioJavaRoutes.PDB, new PDBRoute());
-
-		get(BioJavaRoutes.MMCIF, new MMCIFRoute());
-
-		get(BioJavaRoutes.NGL, new NGLRoute(), new HandlebarsTemplateEngine());
+	public NGLRouteParams(String structureId,String structUrl) {
+		super(structUrl);
+		this.structureId = structureId;
 	}
+
+	public String getStructureId() {
+		return structureId;
+	}
+
+	public void setStructureId(String structureId) {
+		this.structureId = structureId;
+	}
+
 }

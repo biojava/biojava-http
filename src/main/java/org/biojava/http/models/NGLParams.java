@@ -22,7 +22,7 @@
  *
  */
  
-package org.biojava.http.structure;
+package org.biojava.http.models;
  
 public class NGLParams {
 	private String url;

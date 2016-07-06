@@ -21,27 +21,34 @@
  * Author: blivens 
  *
  */
+ 
+package org.biojava.http.models;
 
-package org.biojava.http;
+import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
+ 
+public class CESymmParams {
 
-import static spark.Spark.*;
+	private NGLParams ngl;
+	private CeSymmResult result;
+	
+	public CESymmParams(CeSymmResult result) {
+		this.result = result;
+		this.ngl = new NGLParams("/cesymm/"+result.getStructureId());
+	}
 
-import org.biojava.http.routes.MMCIFRoute;
-import org.biojava.http.routes.NGLRoute;
-import org.biojava.http.routes.PDBRoute;
+	public NGLParams getNgl() {
+		return ngl;
+	}
 
-import spark.template.handlebars.HandlebarsTemplateEngine;
+	public void setNgl(NGLParams nglParams) {
+		this.ngl = nglParams;
+	}
 
-public class ServerMain {
-	public static void main(String[] args) {
-		//  port(4567);
-		
-		get("/", (r,r2) -> "BioJava HTTP");
+	public CeSymmResult getResult() {
+		return result;
+	}
 
-		get(BioJavaRoutes.PDB, new PDBRoute());
-
-		get(BioJavaRoutes.MMCIF, new MMCIFRoute());
-
-		get(BioJavaRoutes.NGL, new NGLRoute(), new HandlebarsTemplateEngine());
+	public void setResult(CeSymmResult result) {
+		this.result = result;
 	}
 }

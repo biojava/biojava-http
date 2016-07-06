@@ -22,33 +22,10 @@
  *
  */
  
-package org.biojava.http.structure;
-
-import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
+package org.biojava.http;
  
-public class CESymmParams {
-
-	private NGLParams ngl;
-	private CeSymmResult result;
-	
-	public CESymmParams(CeSymmResult result) {
-		this.result = result;
-		this.ngl = new NGLParams("/cesymm/"+result.getStructureId());
-	}
-
-	public NGLParams getNgl() {
-		return ngl;
-	}
-
-	public void setNgl(NGLParams nglParams) {
-		this.ngl = nglParams;
-	}
-
-	public CeSymmResult getResult() {
-		return result;
-	}
-
-	public void setResult(CeSymmResult result) {
-		this.result = result;
-	}
+public class BioJavaRoutes {
+	public static String PDB = "/pdb/:id";
+	public static String MMCIF = "/mmcif/:id";
+	public static String NGL = "/ngl/:id";
 }

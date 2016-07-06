@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <title>CE-Symm Analysis of {{result.structureId}}</title>
+	<meta charset='utf-8'>
+	<title>CE-Symm Analysis of {{structureId}}</title>
 </head>
 <body>
 
-<h1>CE-Symm Analysis of {{result.structureId}}</h1>
+<h1>CE-Symm Analysis of {{structureId}}</h1>
 
 
-	<script src="{{ngl.url}}"></script>
+	<script src="{{url}}"></script>
 
 	<script>
 	// regen
-	 NGL.mainScriptFilePath = "{{ngl.url}}";
-	 
+	 NGL.mainScriptFilePath = "{{url}}";
+
 	 // exposing the stage variable so that we can do things on the console
-	 var stage;	 
-	 
+	 var stage;
+
 	 document.onkeypress = function (e) {
 		e = e || window.event;
 
@@ -45,31 +45,31 @@
 
 	 /**
 	  * A function to trigger a png transparent screenshot with given factor
-      * @param factor the number of times the current canvas size will be multiplied by
+	  * @param factor the number of times the current canvas size will be multiplied by
 	  */
 	 function screenshot(factor) {
 		if (stage!==undefined) {
 			stage.makeImage({factor: factor, antialias: true, trim: false, transparent: true}).then(function(blob) { NGL.download(blob) } )
 		}
 	 }
-	 
-	 
+
+
 	 document.addEventListener( "DOMContentLoaded", function() {
 
 		stage = new NGL.Stage( "viewport" );
 
 		stage.setParameters({ backgroundColor:"white"} );
 
-		stage.loadFile( "/mmcif/{{result.structureId}}", { defaultRepresentation: true, ext:"cif" } ).then(function(o) {
+		stage.loadFile( "/mmcif/{{structureId}}", { defaultRepresentation: true, ext:"cif" } ).then(function(o) {
 			
-			console.log("Loaded {{result.structureId}}");
+			console.log("Loaded {{structureId}}");
 			
 		} ); //add event listener
 	} );
 	
 	</script>
 	
-	<div id="viewport" style="width:{{ngl.size}}px; height:{{ngl.size}}px;"></div>
+	<div id="viewport" style="width:500px; height:500px;"></div>
 	
 </body>
 </html>
