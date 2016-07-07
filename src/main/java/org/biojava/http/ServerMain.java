@@ -24,7 +24,7 @@
 
 package org.biojava.http;
 
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 import org.biojava.http.compute.CeSymmPDBTransformer;
 import org.biojava.http.compute.JsonTransformer;
@@ -42,7 +42,7 @@ public class ServerMain {
 	public static Logger logger = LoggerFactory.getLogger(ServerMain.class);
 
 	public static void main(String[] args) {
-		//  port(4567);
+		port(8080);
 		
 		get("/", (r,r2) -> "BioJava HTTP");
 

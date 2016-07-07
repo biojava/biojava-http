@@ -30,6 +30,17 @@
 			</snapshots>
 		</repository>
 	</repositories>
+	
+	<scm>
+		<connection>scm:git:git@github.com:biojava/biojava-http.git</connection>
+		<developerConnection>scm:git:git@github.com:biojava/biojava-http.git</developerConnection>
+		<url>https://github.com/biojava/biojava-http</url>
+		<tag>HEAD</tag>
+	</scm>
+	<issueManagement>
+		<url>https://github.com/biojava/biojava-http/issues</url>
+		<system>Github</system>
+	</issueManagement>
 
 	<dependencies>
 		<dependency>
@@ -107,6 +118,95 @@
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
 					<maxmem>2000m</maxmem>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<!-- Minimizing removes log4j -->
+							<minimizeJar>false</minimizeJar>
+							<outputFile>target/${project.artifactId}-full-${project.version}.jar</outputFile>
+							<artifactSet>
+								<excludes>
+									<exclude>junit:junit</exclude>
+								</excludes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<!-- Exclude signature files -->
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Specification-Vendor>BioJava</Specification-Vendor>
+										<Implementation-Vendor>BioJava</Implementation-Vendor>
+										<Specification-Version>${project.version}</Specification-Version>
+										<Implementation-Version>${project.version}</Implementation-Version>
+										<Specification-Title>${project.name}</Specification-Title>
+										<Implementation-Title>${project.name}</Implementation-Title>
+										<Main-Class>org.biojava.http.ServerMain</Main-Class>
+										<Build-Date>${build.date}</Build-Date>
+										<Build-Number>${buildNumber}</Build-Number>
+									</manifestEntries>
+								</transformer>
+								<!-- This bit merges the various META-INF/services files -->
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- Include git commit -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>createbuildnum</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>createdate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+						<configuration>
+							<format>{0,date,yyyy-MM-dd}</format>
+							<items>
+								<item>timestamp</item>
+							</items>
+							<buildNumberPropertyName>build.date</buildNumberPropertyName>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- Allow building with local modifications -->
+					<doCheck>false</doCheck>
+					<!-- No need to fetch with git -->
+					<doUpdate>false</doUpdate>
 				</configuration>
 			</plugin>
 		</plugins>
