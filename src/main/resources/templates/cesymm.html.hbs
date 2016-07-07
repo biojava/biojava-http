@@ -1,78 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset='utf-8'>
-	<title>{{structureId}} CE-Symm Analysis</title>
+    <meta charset='utf-8'>
+    <title>{{structureId}} CE-Symm Analysis</title>
 </head>
 <body>
 
-	<h1>CE-Symm Analysis of {{structureId}}</h1>
+<h1>CE-Symm Analysis of {{structureId}}</h1>
 
-	<script src="{{url}}"></script>
+<script src='//code.jquery.com/jquery-1.11.0.min.js'></script>
 
-	<script>
-	// regen
-	 NGL.mainScriptFilePath = "{{url}}";
+<script src="{{url}}"></script>
 
-	 // exposing the stage variable so that we can do things on the console
-	 var stage;
+<script src="https://raw.githubusercontent.com/google/palette.js/master/palette.js"></script>
+<!--script src="{{pallete_url}}"></script-->
 
-	 document.onkeypress = function (e) {
-		e = e || window.event;
+<script>
 
-		if (e !== undefined && e.which == 115) { // 115 is s
-			console.log("s was pressed: small screenshot (1x)");
-			screenshot(1);
+document.onkeypress = function (e) {
+    e = e || window.event;
+
+    if (e !== undefined && e.which == 115) { // 115 is s
+       console.log("s was pressed: small screenshot (1x)");
+       screenshot(1);
+    }
+
+    if (e !== undefined && e.which == 109) { // 109 is m
+       console.log("m was pressed: medium screenshot (2x)");
+       screenshot(2);
+    }
+
+    if (e !== undefined && e.which == 108) { // 108 is l
+       console.log("l was pressed: large screenshot (3x)");
+       screenshot(3);
+    }
+
+    if (e !== undefined && e.which == 120) { // 120 is x
+       console.log("x was pressed: xtra large screenshot (4x)");
+       screenshot(4);
+    }
+
+};
+
+/**
+ * A function to trigger a png transparent screenshot with given factor
+ * @param factor the number of times the current canvas size will be multiplied by
+ */
+function screenshot(factor) {
+    if (stage!==undefined) {
+       stage.makeImage({factor: factor, antialias: true, trim: false, transparent: true}).then(function(blob) { NGL.download(blob) } )
+    }
+}
+
+NGL.mainScriptFilePath = "{{url}}";
+var stage;
+
+document.addEventListener( "DOMContentLoaded", function() {
+	$.getJSON("{{jsonUrl}}", function(data) {
+	    stage = new NGL.Stage( "viewport" );
+	    stage.setParameters({ backgroundColor:"white" } );
+
+		// This can be cleaner
+	    raw_lines = data.multipleAlignment.split("\n");
+		var lines = []
+		for (k = 0; k < raw_lines.length; k++) {
+			if (!raw_lines[k].startsWith("#") && raw_lines[k].length > 0) {
+				lines.push(raw_lines[k])
+			}
 		}
 
-		if (e !== undefined && e.which == 109) { // 109 is m
-			console.log("m was pressed: medium screenshot (2x)");
-			screenshot(2);
-		}
+	    // Get number of structures from first line
+	    var n_strucs = (lines[0].split("\t").length - 1) / 3;
 
-		if (e !== undefined && e.which == 108) { // 108 is l
-			console.log("l was pressed: large screenshot (3x)");
-			screenshot(3);
-		}
+	    // Generate color palette
+	    var colors = palette('tol-rainbow', lines.length);
 
-		if (e !== undefined && e.which == 120) { // 120 is x
-			console.log("x was pressed: xtra large screenshot (4x)");
-			screenshot(4);
-		}
+	    stage.loadFile( "/cesymm/{{structureId}}/pdb", { defaultRepresentation: false, ext:"pdb" } ).then( function( o ){
+	        o.addRepresentation( "backbone", { color: "lightgrey" } );
+	        for (i = 0; i < lines.length; i++) {
+	            var tabs = lines[i].split("\t");
+	            for (j = 0; j < n_strucs; j++) {
+	                if (tabs[3*j] != "-") {
+	                    o.addRepresentation( "backbone", {
+	                        sele: "(" + tabs[3*j] + " or " + (parseInt(tabs[3*j])+1) + ") and :" + tabs[3*j+1] + " and /" + j,
+	                        color: "#" + colors[i]
+	                    });
+	                }
+	            }
+	        }
+	        o.centerView();
+	    } );
+	});
+} );
 
-	 };
+</script>
 
-	 /**
-	  * A function to trigger a png transparent screenshot with given factor
-	  * @param factor the number of times the current canvas size will be multiplied by
-	  */
-	 function screenshot(factor) {
-		if (stage!==undefined) {
-			stage.makeImage({factor: factor, antialias: true, trim: false, transparent: true}).then(function(blob) { NGL.download(blob) } )
-		}
-	 }
+<div id="viewport" style="width:500px; height:500px;"></div>
 
-
-	 document.addEventListener( "DOMContentLoaded", function() {
-
-		stage = new NGL.Stage( "viewport" );
-
-		stage.setParameters({ backgroundColor:"white"} );
-
-		stage.loadFile( "/cesymm/{{structureId}}/pdb", { defaultRepresentation: false, ext:"pdb" } ).then(function(o) {
-			
-			console.log("Loaded {{structureId}}");
-			o.addRepresentation("cartoon", {color:"grey"});
-			o.addRepresentation("cartoon", {sele:"/0",color:"blue"});
-			o.addRepresentation("cartoon", {sele:"/1",color:"red"});
-			stage.centerView();
-
-		} ); //add event listener
-	} );
-	
-	</script>
-	
-	<div id="viewport" style="width:500px; height:500px;"></div>
-	
 </body>
 </html>
