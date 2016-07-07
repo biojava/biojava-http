@@ -24,26 +24,28 @@
 
 package org.biojava.http.routes;
 
+import java.util.concurrent.Future;
+
 import org.biojava.http.BioJavaRoutes;
-import org.biojava.http.models.CeSymmRouteParams;
+import org.biojava.http.compute.CeSymmResultCache;
+import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.TemplateViewRoute;
+import spark.Route;
 
 /**
  * Handle requests for {@link BioJavaRoutes#MMCIF}
  * @author Spencer Bliven
  *
  */
-public class CeSymmRoute implements TemplateViewRoute {
-	public static Logger logger = LoggerFactory.getLogger(CeSymmRoute.class);
+public class CeSymmResultRoute implements Route {
+	public static Logger logger = LoggerFactory.getLogger(CeSymmResultRoute.class);
 
 	@Override
-	public ModelAndView handle(Request request, Response response) throws Exception {
+	public CeSymmResult handle(Request request, Response response) {
 		String id = request.params(":id");
 		if(id == null) {
 			response.status(404);
@@ -51,10 +53,10 @@ public class CeSymmRoute implements TemplateViewRoute {
 			return null;
 		}
 		try {
-			String structUrl = BioJavaRoutes.CESYMM_PDB.replace(":id", id);
-			String jsonUrl = BioJavaRoutes.CESYMM_JSON.replace(":id", id);
-			CeSymmRouteParams params = new CeSymmRouteParams(id,structUrl,jsonUrl);
-			return new ModelAndView(params, "cesymm.html.hbs");
+			CeSymmResultCache resultCache = CeSymmResultCache.getInstance();
+			Future<CeSymmResult> future = resultCache.analyze(id);
+			CeSymmResult result = future.get();
+			return result;
 		} catch(Exception e) {
 			logger.error("Error",e);
 			response.status(404);

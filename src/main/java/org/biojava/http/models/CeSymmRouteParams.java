@@ -21,40 +21,35 @@
  * Author: blivens 
  *
  */
- 
+
 package org.biojava.http.models;
- 
-public class NGLParams {
-	private String url;
-	private String structUrl;
-	private int size;
+
+
+public class CeSymmRouteParams extends NGLParams{
+	private String structureId;
+	private String jsonUrl;
 	
-	public NGLParams(String structUrl) {
-		url = "https://cdn.rawgit.com/arose/ngl/v0.7.1a/js/build/ngl.embedded.min.js";
-		this.structUrl = structUrl;
-		this.setSize(500);
-	}
-	
-	public String getUrl() {
-		return url;
+
+	public CeSymmRouteParams(String structureId,String structUrl,String jsonUrl) {
+		super(structUrl);
+		this.structureId = structureId;
+		this.jsonUrl = jsonUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public String getStructureId() {
+		return structureId;
 	}
 
-	public String getStructUrl() {
-		return structUrl;
-	}
-	public void setStructUrl(String structUrl) {
-		this.structUrl = structUrl;
+	public void setStructureId(String structureId) {
+		this.structureId = structureId;
 	}
 
-	public int getSize() {
-		return size;
+	public String getJsonUrl() {
+		return jsonUrl;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
+	public void setJsonUrl(String jsonUrl) {
+		this.jsonUrl = jsonUrl;
 	}
+
 }

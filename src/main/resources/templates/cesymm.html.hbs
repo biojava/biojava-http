@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>{{structureId}} CE-Symm Analysis</title>
+</head>
+<body>
+
+	<h1>CE-Symm Analysis of {{structureId}}</h1>
+
+	<script src="{{url}}"></script>
+
+	<script>
+	// regen
+	 NGL.mainScriptFilePath = "{{url}}";
+
+	 // exposing the stage variable so that we can do things on the console
+	 var stage;
+
+	 document.onkeypress = function (e) {
+		e = e || window.event;
+
+		if (e !== undefined && e.which == 115) { // 115 is s
+			console.log("s was pressed: small screenshot (1x)");
+			screenshot(1);
+		}
+
+		if (e !== undefined && e.which == 109) { // 109 is m
+			console.log("m was pressed: medium screenshot (2x)");
+			screenshot(2);
+		}
+
+		if (e !== undefined && e.which == 108) { // 108 is l
+			console.log("l was pressed: large screenshot (3x)");
+			screenshot(3);
+		}
+
+		if (e !== undefined && e.which == 120) { // 120 is x
+			console.log("x was pressed: xtra large screenshot (4x)");
+			screenshot(4);
+		}
+
+	 };
+
+	 /**
+	  * A function to trigger a png transparent screenshot with given factor
+	  * @param factor the number of times the current canvas size will be multiplied by
+	  */
+	 function screenshot(factor) {
+		if (stage!==undefined) {
+			stage.makeImage({factor: factor, antialias: true, trim: false, transparent: true}).then(function(blob) { NGL.download(blob) } )
+		}
+	 }
+
+
+	 document.addEventListener( "DOMContentLoaded", function() {
+
+		stage = new NGL.Stage( "viewport" );
+
+		stage.setParameters({ backgroundColor:"white"} );
+
+		stage.loadFile( "/cesymm/{{structureId}}/pdb", { defaultRepresentation: true, ext:"pdb" } ).then(function(o) {
+			
+			console.log("Loaded {{structureId}}");
+			
+		} ); //add event listener
+	} );
+	
+	</script>
+	
+	<div id="viewport" style="width:500px; height:500px;"></div>
+	
+</body>
+</html>

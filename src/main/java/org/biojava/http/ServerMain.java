@@ -26,8 +26,10 @@ package org.biojava.http;
 
 import static spark.Spark.get;
 
-import org.biojava.http.routes.CESymmRoute;
-import org.biojava.http.routes.JsonTransformer;
+import org.biojava.http.compute.CeSymmPDBTransformer;
+import org.biojava.http.compute.JsonTransformer;
+import org.biojava.http.routes.CeSymmResultRoute;
+import org.biojava.http.routes.CeSymmRoute;
 import org.biojava.http.routes.MMCIFRoute;
 import org.biojava.http.routes.NGLRoute;
 import org.biojava.http.routes.PDBRoute;
@@ -50,6 +52,8 @@ public class ServerMain {
 
 		get(BioJavaRoutes.NGL, new NGLRoute(), new HandlebarsTemplateEngine());
 		
-		get(BioJavaRoutes.CESYMM_JSON, new CESymmRoute(),new JsonTransformer());
+		get(BioJavaRoutes.CESYMM, new CeSymmRoute(), new HandlebarsTemplateEngine());
+		get(BioJavaRoutes.CESYMM_JSON, new CeSymmResultRoute(),new JsonTransformer());
+		get(BioJavaRoutes.CESYMM_PDB, new CeSymmResultRoute(),new CeSymmPDBTransformer());
 	}
 }

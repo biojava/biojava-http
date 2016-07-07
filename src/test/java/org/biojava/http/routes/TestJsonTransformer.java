@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
+import org.biojava.http.compute.JsonTransformer;
 import org.biojava.nbio.structure.Atom;
 import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.StructureException;
@@ -37,8 +38,6 @@ import org.biojava.nbio.structure.symmetry.internal.CESymmParameters;
 import org.biojava.nbio.structure.symmetry.internal.CeSymm;
 import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
 import org.junit.Test;
-
-import com.google.gson.Gson;
  
 public class TestJsonTransformer {
 

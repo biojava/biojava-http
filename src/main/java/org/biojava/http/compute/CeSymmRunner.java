@@ -22,7 +22,7 @@
  *
  */
  
-package org.biojava.http.routes;
+package org.biojava.http.compute;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;

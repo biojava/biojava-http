@@ -22,7 +22,7 @@
  *
  */
 
-package org.biojava.http.routes;
+package org.biojava.http.compute;
 
 import java.util.Collections;
 import java.util.HashMap;

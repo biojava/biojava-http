@@ -22,9 +22,9 @@
  *
  */
 
-package org.biojava.http.routes;
+package org.biojava.http.compute;
 
-import org.biojava.http.json.CESymmResultSerializer;
+import org.biojava.http.json.CeSymmResultSerializer;
 import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
 
 import spark.ResponseTransformer;
@@ -39,7 +39,7 @@ public class JsonTransformer implements ResponseTransformer {
 	public JsonTransformer() {
 		super();
 		gson = new GsonBuilder()
-			.registerTypeAdapter(CeSymmResult.class, new CESymmResultSerializer())
+			.registerTypeAdapter(CeSymmResult.class, new CeSymmResultSerializer())
 			.create();
 	}
 	

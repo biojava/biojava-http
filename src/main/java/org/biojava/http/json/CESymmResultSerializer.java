@@ -36,8 +36,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class CESymmResultSerializer implements JsonSerializer<CeSymmResult> {
-	private static final Logger logger = LoggerFactory.getLogger(CESymmResultSerializer.class);
+public class CeSymmResultSerializer implements JsonSerializer<CeSymmResult> {
+	private static final Logger logger = LoggerFactory.getLogger(CeSymmResultSerializer.class);
 	
 	@Override
 	public JsonElement serialize(CeSymmResult src, Type typeOfSrc, JsonSerializationContext context) {

@@ -28,5 +28,7 @@ public class BioJavaRoutes {
 	public static String PDB = "/pdb/:id";
 	public static String MMCIF = "/mmcif/:id";
 	public static String NGL = "/ngl/:id";
+	public static String CESYMM = "/cesymm/:id";
 	public static String CESYMM_JSON = "/cesymm/:id/json";
+	public static String CESYMM_PDB = "/cesymm/:id/pdb";
 }

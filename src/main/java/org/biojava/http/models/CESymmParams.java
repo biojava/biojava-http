@@ -26,12 +26,12 @@ package org.biojava.http.models;
 
 import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
  
-public class CESymmParams {
+public class CeSymmParams {
 
 	private NGLParams ngl;
 	private CeSymmResult result;
-	
-	public CESymmParams(CeSymmResult result) {
+
+	public CeSymmParams(CeSymmResult result) {
 		this.result = result;
 		this.ngl = new NGLParams("/cesymm/"+result.getStructureId());
 	}
