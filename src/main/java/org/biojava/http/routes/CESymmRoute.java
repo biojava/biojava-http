@@ -24,12 +24,9 @@
 
 package org.biojava.http.routes;
 
+import java.util.concurrent.Future;
+
 import org.biojava.http.BioJavaRoutes;
-import org.biojava.nbio.structure.Atom;
-import org.biojava.nbio.structure.Structure;
-import org.biojava.nbio.structure.StructureIO;
-import org.biojava.nbio.structure.StructureTools;
-import org.biojava.nbio.structure.symmetry.internal.CeSymm;
 import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,14 +52,9 @@ public class CESymmRoute implements Route {
 			return null;
 		}
 		try {
-			Structure s = StructureIO.getStructure(id);
-			if(s == null) {
-				response.status(404);
-				logger.error("null structure for "+id);
-				return null;
-			}
-			Atom[] ca = StructureTools.getRepresentativeAtomArray(s);
-			CeSymmResult result = CeSymm.analyze(ca);
+			CeSymmResultCache resultCache = CeSymmResultCache.getInstance();
+			Future<CeSymmResult> future = resultCache.analyze(id);
+			CeSymmResult result = future.get();
 			return result;
 		} catch(Exception e) {
 			logger.error("Error",e);
