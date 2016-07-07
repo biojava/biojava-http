@@ -60,7 +60,7 @@
 		stage.loadFile( "/mmcif/{{structureId}}", { defaultRepresentation: true, ext:"cif" } ).then(function(o) {
 			
 			console.log("Loaded {{structureId}}");
-			
+			stage.centerView();
 		} ); //add event listener
 	} );
 	
