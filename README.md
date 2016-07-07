@@ -4,6 +4,8 @@ BioJava HTTP
 
 HTML/JS based user interfaces for BioJava
 
+[![Build Status](https://travis-ci.org/biojava/biojava-http.svg?branch=master)](https://travis-ci.org/biojava/biojava-http)
+
 
 History
 -------
