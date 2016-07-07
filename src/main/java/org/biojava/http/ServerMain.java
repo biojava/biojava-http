@@ -24,15 +24,21 @@
 
 package org.biojava.http;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
 
+import org.biojava.http.routes.CESymmRoute;
+import org.biojava.http.routes.JsonTransformer;
 import org.biojava.http.routes.MMCIFRoute;
 import org.biojava.http.routes.NGLRoute;
 import org.biojava.http.routes.PDBRoute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 public class ServerMain {
+	public static Logger logger = LoggerFactory.getLogger(ServerMain.class);
+
 	public static void main(String[] args) {
 		//  port(4567);
 		
@@ -43,5 +49,7 @@ public class ServerMain {
 		get(BioJavaRoutes.MMCIF, new MMCIFRoute());
 
 		get(BioJavaRoutes.NGL, new NGLRoute(), new HandlebarsTemplateEngine());
+		
+		get(BioJavaRoutes.CESYMM_JSON, new CESymmRoute(),new JsonTransformer());
 	}
 }

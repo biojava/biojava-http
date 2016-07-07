@@ -21,12 +21,31 @@
  * Author: blivens 
  *
  */
- 
-package org.biojava.http;
- 
-public class BioJavaRoutes {
-	public static String PDB = "/pdb/:id";
-	public static String MMCIF = "/mmcif/:id";
-	public static String NGL = "/ngl/:id";
-	public static String CESYMM_JSON = "/cesymm/:id/json";
+
+package org.biojava.http.routes;
+
+import org.biojava.http.json.CESymmResultSerializer;
+import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
+
+import spark.ResponseTransformer;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+public class JsonTransformer implements ResponseTransformer {
+
+	private Gson gson;
+
+	public JsonTransformer() {
+		super();
+		gson = new GsonBuilder()
+			.registerTypeAdapter(CeSymmResult.class, new CESymmResultSerializer())
+			.create();
+	}
+	
+	@Override
+	public String render(Object model) {
+		return gson.toJson(model);
+	}
+
 }

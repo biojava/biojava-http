@@ -25,7 +25,6 @@
 package org.biojava.http.routes;
 
 import org.biojava.http.BioJavaRoutes;
-import org.biojava.http.models.CESymmParams;
 import org.biojava.nbio.structure.Atom;
 import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.StructureIO;
@@ -35,21 +34,20 @@ import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.TemplateViewRoute;
+import spark.Route;
 
 /**
  * Handle requests for {@link BioJavaRoutes#MMCIF}
  * @author Spencer Bliven
  *
  */
-public class CESymmRoute implements TemplateViewRoute {
+public class CESymmRoute implements Route {
 	public static Logger logger = LoggerFactory.getLogger(CESymmRoute.class);
 
 	@Override
-	public ModelAndView handle(Request request, Response response) throws Exception {
+	public CeSymmResult handle(Request request, Response response) {
 		String id = request.params(":id");
 		if(id == null) {
 			response.status(404);
@@ -65,9 +63,7 @@ public class CESymmRoute implements TemplateViewRoute {
 			}
 			Atom[] ca = StructureTools.getRepresentativeAtomArray(s);
 			CeSymmResult result = CeSymm.analyze(ca);
-
-			CESymmParams params = new CESymmParams(result);
-			return new ModelAndView(params, "cesymm.html.hbs");
+			return result;
 		} catch(Exception e) {
 			logger.error("Error",e);
 			response.status(404);
