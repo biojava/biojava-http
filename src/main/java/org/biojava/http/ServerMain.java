@@ -33,9 +33,12 @@ import org.biojava.http.routes.CeSymmRoute;
 import org.biojava.http.routes.MMCIFRoute;
 import org.biojava.http.routes.NGLRoute;
 import org.biojava.http.routes.PDBRoute;
+import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import spark.Request;
+import spark.Response;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 public class ServerMain {
@@ -54,6 +57,12 @@ public class ServerMain {
 		
 		get(BioJavaRoutes.CESYMM, new CeSymmRoute(), new HandlebarsTemplateEngine());
 		get(BioJavaRoutes.CESYMM_JSON, new CeSymmResultRoute(),new JsonTransformer());
-		get(BioJavaRoutes.CESYMM_PDB, new CeSymmResultRoute(),new CeSymmPDBTransformer());
+		get(BioJavaRoutes.CESYMM_PDB, new CeSymmResultRoute() {
+			@Override public CeSymmResult handle(Request request, Response response) {
+				CeSymmResult result = super.handle(request, response);
+				response.header("Content-Type", "chemical/x-pdb");
+				return result;
+			};
+		},new CeSymmPDBTransformer());
 	}
 }

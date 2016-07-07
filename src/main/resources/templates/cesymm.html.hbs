@@ -59,10 +59,12 @@
 
 		stage.setParameters({ backgroundColor:"white"} );
 
-		stage.loadFile( "/cesymm/{{structureId}}/pdb", { defaultRepresentation: true, ext:"pdb" } ).then(function(o) {
+		stage.loadFile( "/cesymm/{{structureId}}/pdb", { defaultRepresentation: false, ext:"pdb" } ).then(function(o) {
 			
 			console.log("Loaded {{structureId}}");
-			
+			o.addRepresentation("cartoon", {color:"grey"});
+			o.addRepresentation("cartoon", {sele:"/0",color:"blue"});
+			o.addRepresentation("cartoon", {sele:"/1",color:"red"});
 		} ); //add event listener
 	} );
 	
