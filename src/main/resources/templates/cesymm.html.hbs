@@ -73,17 +73,20 @@ document.addEventListener( "DOMContentLoaded", function() {
 	    var n_strucs = (lines[0].split("\t").length - 1) / 3;
 
 	    // Generate color palette
-	    var colors = palette('tol-rainbow', lines.length);
+	    var colors = palette('cb-Dark2', n_strucs);
 
-	    stage.loadFile( "/cesymm/{{structureId}}/pdb", { defaultRepresentation: false, ext:"pdb" } ).then( function( o ){
+	    stage.loadFile( "/pdb/{{structureId}}", { defaultRepresentation: false, ext:"pdb" } ).then( function( o ){
 	        o.addRepresentation( "backbone", { color: "lightgrey" } );
 	        for (i = 0; i < lines.length; i++) {
 	            var tabs = lines[i].split("\t");
 	            for (j = 0; j < n_strucs; j++) {
 	                if (tabs[3*j] != "-") {
 	                    o.addRepresentation( "backbone", {
-	                        sele: "(" + tabs[3*j] + " or " + (parseInt(tabs[3*j])+1) + ") and :" + tabs[3*j+1] + " and /" + j,
-	                        color: "#" + colors[i]
+	                        sele: "(" + tabs[3*j] + " or " + (parseInt(tabs[3*j])+1) + ") and :" + tabs[3*j+1],
+	                        color: "#" + colors[j]
+	                    });
+	                    o.addRepresentation( "ball+stick", {
+	                        sele: "hetero and not ( water )"
 	                    });
 	                }
 	            }
