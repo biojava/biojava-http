@@ -27,6 +27,7 @@ package org.biojava.http;
 import static spark.Spark.*;
 
 import org.biojava.http.compute.CeSymmPDBTransformer;
+import org.biojava.http.compute.CeSymmTSVTransformer;
 import org.biojava.http.compute.JsonTransformer;
 import org.biojava.http.routes.CeSymmResultRoute;
 import org.biojava.http.routes.CeSymmRoute;
@@ -66,5 +67,6 @@ public class ServerMain {
 				return result;
 			};
 		},new CeSymmPDBTransformer());
+		get(BioJavaRoutes.CESYMM_TSV, new CeSymmResultRoute(),new CeSymmTSVTransformer());
 	}
 }

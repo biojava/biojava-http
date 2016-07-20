@@ -27,13 +27,13 @@ package org.biojava.http.models;
 
 public class CeSymmRouteParams extends NGLParams{
 	private String structureId;
-	private String jsonUrl;
+	private String tsvUrl;
 	
 
-	public CeSymmRouteParams(String structureId,String structUrl,String jsonUrl) {
+	public CeSymmRouteParams(String structureId,String structUrl,String tsvUrl) {
 		super(structUrl);
 		this.structureId = structureId;
-		this.jsonUrl = jsonUrl;
+		this.tsvUrl = tsvUrl;
 	}
 
 	public String getStructureId() {
@@ -44,12 +44,12 @@ public class CeSymmRouteParams extends NGLParams{
 		this.structureId = structureId;
 	}
 
-	public String getJsonUrl() {
-		return jsonUrl;
+	public String getTsvUrl() {
+		return tsvUrl;
 	}
 
-	public void setJsonUrl(String jsonUrl) {
-		this.jsonUrl = jsonUrl;
+	public void setTsvUrl(String tsvUrl) {
+		this.tsvUrl = tsvUrl;
 	}
 
 }

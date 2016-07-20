@@ -26,7 +26,6 @@ package org.biojava.http.json;
 
 import java.lang.reflect.Type;
 
-import org.biojava.nbio.structure.align.multiple.util.MultipleAlignmentWriter;
 import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +42,7 @@ public class CeSymmResultSerializer implements JsonSerializer<CeSymmResult> {
 	public JsonElement serialize(CeSymmResult src, Type typeOfSrc, JsonSerializationContext context) {
 		logger.info("Serializing to json");
 		JsonObject json = new JsonObject();
-		json.addProperty("multipleAlignment", MultipleAlignmentWriter.toAlignedResidues(src.getMultipleAlignment()));
+		//json.addProperty("multipleAlignment", MultipleAlignmentWriter.toAlignedResidues(src.getMultipleAlignment()));
 		json.addProperty("structureId",src.getStructureId().getIdentifier());
 		json.addProperty("numRepeats", src.getNumRepeats());
 		json.addProperty("refined", src.isRefined());

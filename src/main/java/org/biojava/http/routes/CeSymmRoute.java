@@ -52,7 +52,7 @@ public class CeSymmRoute implements TemplateViewRoute {
 		}
 		try {
 			String structUrl = BioJavaRoutes.CESYMM_PDB.replace(":id", id);
-			String jsonUrl = BioJavaRoutes.CESYMM_JSON.replace(":id", id);
+			String jsonUrl = BioJavaRoutes.CESYMM_TSV.replace(":id", id);
 			CeSymmRouteParams params = new CeSymmRouteParams(id,structUrl,jsonUrl);
 			return new ModelAndView(params, "cesymm.html.hbs");
 		} catch(Exception e) {

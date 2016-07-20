@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <title>{{structureId}} CE-Symm Analysis</title>
+	<meta charset='utf-8'>
+	<title>{{structureId}} CE-Symm Analysis</title>
 </head>
 <body>
 
@@ -14,54 +14,20 @@
 
 <script src="https://cdn.rawgit.com/google/palette.js/master/palette.js"></script>
 <!--script src="{{pallete_url}}"></script-->
-
+<script src="/js/ngl_ui.js"></script>
 <script>
-
-document.onkeypress = function (e) {
-    e = e || window.event;
-
-    if (e !== undefined && e.which == 115) { // 115 is s
-       console.log("s was pressed: small screenshot (1x)");
-       screenshot(1);
-    }
-
-    if (e !== undefined && e.which == 109) { // 109 is m
-       console.log("m was pressed: medium screenshot (2x)");
-       screenshot(2);
-    }
-
-    if (e !== undefined && e.which == 108) { // 108 is l
-       console.log("l was pressed: large screenshot (3x)");
-       screenshot(3);
-    }
-
-    if (e !== undefined && e.which == 120) { // 120 is x
-       console.log("x was pressed: xtra large screenshot (4x)");
-       screenshot(4);
-    }
-
-};
-
-/**
- * A function to trigger a png transparent screenshot with given factor
- * @param factor the number of times the current canvas size will be multiplied by
- */
-function screenshot(factor) {
-    if (stage!==undefined) {
-       stage.makeImage({factor: factor, antialias: true, trim: false, transparent: true}).then(function(blob) { NGL.download(blob) } )
-    }
-}
-
 NGL.mainScriptFilePath = "{{url}}";
 var stage;
+document.onkeypress = function(e) { default_keypress(stage,e); };
 
 document.addEventListener( "DOMContentLoaded", function() {
-	$.getJSON("{{jsonUrl}}", function(data) {
-	    stage = new NGL.Stage( "viewport" );
-	    stage.setParameters({ backgroundColor:"white" } );
+	$.get("{{tsvUrl}}", function(tsv) {
+		stage = new NGL.Stage( "viewport" );
+		stage.setParameters({ backgroundColor:"white" } );
 
+		// Parse TSV file
 		// This can be cleaner
-	    raw_lines = data.multipleAlignment.split("\n");
+		raw_lines = tsv.split("\n");
 		var lines = []
 		for (k = 0; k < raw_lines.length; k++) {
 			if (!raw_lines[k].startsWith("#") && raw_lines[k].length > 0) {
@@ -69,36 +35,36 @@ document.addEventListener( "DOMContentLoaded", function() {
 			}
 		}
 
-	    // Get number of structures from first line
-	    var n_strucs = (lines[0].split("\t").length - 1) / 3;
+		// Get number of structures from first line
+		var n_strucs = (lines[0].split("\t").length - 1) / 3;
 
-	    // Generate color palette
-	    var colors = palette('cb-Dark2', n_strucs);
+		// Generate color palette
+		var colors = palette('cb-Dark2', n_strucs);
 
-	    stage.loadFile( "/pdb/{{structureId}}", { defaultRepresentation: false, ext:"pdb" } ).then( function( o ){
-	        o.addRepresentation( "backbone", { color: "lightgrey" } );
-	        for (i = 0; i < lines.length; i++) {
-	            var tabs = lines[i].split("\t");
-	            for (j = 0; j < n_strucs; j++) {
-	                if (tabs[3*j] != "-") {
-	                    o.addRepresentation( "backbone", {
-	                        sele: "(" + tabs[3*j] + " or " + (parseInt(tabs[3*j])+1) + ") and :" + tabs[3*j+1],
-	                        color: "#" + colors[j]
-	                    });
-	                    o.addRepresentation( "ball+stick", {
-	                        sele: "hetero and not ( water )"
-	                    });
-	                }
-	            }
-	        }
-	        o.centerView();
-	    } );
+		stage.loadFile( "/pdb/{{structureId}}", { defaultRepresentation: false, ext:"pdb" } ).then( function( o ){
+			o.addRepresentation( "backbone", { color: "lightgrey" } );
+			for (i = 0; i < lines.length; i++) {
+				var tabs = lines[i].split("\t");
+				for (j = 0; j < n_strucs; j++) {
+					if (tabs[3*j] != "-") {
+						o.addRepresentation( "backbone", {
+							sele: "(" + tabs[3*j] + " or " + (parseInt(tabs[3*j])+1) + ") and :" + tabs[3*j+1],
+							color: "#" + colors[j]
+						});
+					}
+				}
+			}
+			o.addRepresentation( "ball+stick", {
+				sele: "hetero and not ( water )"
+			});
+			o.centerView();
+		} );
 	});
 } );
 
 </script>
 
-<div id="viewport" style="width:500px; height:500px;"></div>
+<div id="viewport" style="width: 100vw; height: 100vh; display:block;"></div>
 
 </body>
 </html>
