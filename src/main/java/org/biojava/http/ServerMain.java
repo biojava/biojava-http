@@ -58,7 +58,8 @@ public class ServerMain {
 
 		get(BioJavaRoutes.NGL, new NGLRoute(), new HandlebarsTemplateEngine());
 
-		get(BioJavaRoutes.CESYMM, new CeSymmRoute(), new HandlebarsTemplateEngine());
+		get(BioJavaRoutes.CESYMM, new CeSymmRoute("cesymm.html.hbs"), new HandlebarsTemplateEngine());
+		get(BioJavaRoutes.CESYMM_MULTIPLE, new CeSymmRoute("cesymm_multi.html.hbs"), new HandlebarsTemplateEngine());
 		get(BioJavaRoutes.CESYMM_JSON, new CeSymmResultRoute(),new JsonTransformer());
 		get(BioJavaRoutes.CESYMM_PDB, new CeSymmResultRoute() {
 			@Override public CeSymmResult handle(Request request, Response response) {

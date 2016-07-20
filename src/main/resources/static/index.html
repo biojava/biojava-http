@@ -112,6 +112,15 @@ pre:after {
 		Analyze the structure for internal symmetry using <a
 			href="https://github.com/rcsb/symmetry">CE-Symm</a>.
 		</p>
+		<p>
+		<table class="route">
+			<tr>
+				<td><pre>/cesymm/:id/multi</pre></td>
+				<td>Example: <a href="/cesymm/1itb.A/multi">/cesymm/1itb.A</a></td>
+			</tr>
+		</table>
+		View the CE-Symm alignment as a multiple structure superposition.
+		</p>
 		<p>Information about the alignment is available in several
 			formats:
 		<table class="route">
@@ -128,6 +137,13 @@ pre:after {
 			</tr>
 		</table>
 		JSON describing the alignment.
+		<table class="route">
+			<tr>
+				<td><pre>/cesymm/:id/tsv</pre></td>
+				<td>Example: <a href="/cesymm/1itb.A/tsv">/cesymm/1itb.A/tsv</a></td>
+			</tr>
+		</table>
+		All aligned residues in the alignment, in tsv format.
 		</p>
 	</div>
 </body>

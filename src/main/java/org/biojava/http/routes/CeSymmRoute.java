@@ -42,6 +42,14 @@ import spark.TemplateViewRoute;
 public class CeSymmRoute implements TemplateViewRoute {
 	public static Logger logger = LoggerFactory.getLogger(CeSymmRoute.class);
 
+	private final String template;
+	public CeSymmRoute() {
+		this("cesymm.html.hbs");
+	}
+	public CeSymmRoute(String template) {
+		this.template = template;
+	}
+
 	@Override
 	public ModelAndView handle(Request request, Response response) throws Exception {
 		String id = request.params(":id");
@@ -54,7 +62,7 @@ public class CeSymmRoute implements TemplateViewRoute {
 			String structUrl = BioJavaRoutes.CESYMM_PDB.replace(":id", id);
 			String jsonUrl = BioJavaRoutes.CESYMM_TSV.replace(":id", id);
 			CeSymmRouteParams params = new CeSymmRouteParams(id,structUrl,jsonUrl);
-			return new ModelAndView(params, "cesymm.html.hbs");
+			return new ModelAndView(params, template);
 		} catch(Exception e) {
 			logger.error("Error",e);
 			response.status(404);

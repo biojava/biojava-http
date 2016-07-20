@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -58,16 +59,25 @@ public class CeSymmResultCache {
 	public Future<CeSymmResult> analyze(String name) {
 		Future<CeSymmResult> future;
 		synchronized(cache) {
-			if( !cache.containsKey(name)) {
-				logger.info("Submitting ",name);
-				CESymmParameters p = params.clone();
-				Callable<CeSymmResult> worker = new CeSymmRunner(name, p, atomCache);
-				future = executor.submit(worker);
-				cache.put(name,future);
-			} else {
-				logger.info("Found previous calculation for {}",name);
+			if( cache.containsKey(name)) {
 				future = cache.get(name);
+				boolean retry = false;
+				try {
+					retry = future.isDone() && future.get() == null;
+				} catch (InterruptedException | ExecutionException e) {}
+				if(retry) {
+					logger.info("Retrying failed job: {}",name);
+				} else {
+					logger.info("Found previous calculation for {}",name);
+					return future;
+				}
+			} else {
+				logger.info("Submitting ",name);
 			}
+			CESymmParameters p = params.clone();
+			Callable<CeSymmResult> worker = new CeSymmRunner(name, p, atomCache);
+			future = executor.submit(worker);
+			cache.put(name,future);
 		}
 
 		return future;
