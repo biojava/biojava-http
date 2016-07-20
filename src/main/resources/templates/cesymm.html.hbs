@@ -26,40 +26,56 @@ document.addEventListener( "DOMContentLoaded", function() {
 		stage.setParameters({ backgroundColor:"white" } );
 
 		// Parse TSV file
-		// This can be cleaner
-		raw_lines = tsv.split("\n");
-		var lines = []
-		for (k = 0; k < raw_lines.length; k++) {
-			if (!raw_lines[k].startsWith("#") && raw_lines[k].length > 0) {
-				lines.push(raw_lines[k])
-			}
-		}
+		// Each line should contain ResNum/Chain/AminoAcid triplets
+		// Lines end with tabs, so each line should have 3n+1 columns for n repeats.
+		var lines = tsv.split("\n")
+			.filter((x) => !x.startsWith("#") && x.length > 0)
+			.map((x) => x.split("\t"));
 
 		// Get number of structures from first line
-		var n_strucs = (lines[0].split("\t").length - 1) / 3;
+		var n_strucs = (lines[0].length - 1) / 3;
 
 		// Generate color palette
 		var colors = palette('cb-Dark2', n_strucs);
 
-		stage.loadFile( "/pdb/{{structureId}}", { defaultRepresentation: false, ext:"pdb" } ).then( function( o ){
-			o.addRepresentation( "backbone", { color: "lightgrey" } );
+		// Create selection for each repeat
+		var colorSele = [];
+		for (j = 0; j < n_strucs; j++) {
+			var seleStr = [];
 			for (i = 0; i < lines.length; i++) {
-				var tabs = lines[i].split("\t");
-				for (j = 0; j < n_strucs; j++) {
-					if (tabs[3*j] != "-") {
-						o.addRepresentation( "backbone", {
-							sele: "(" + tabs[3*j] + " or " + (parseInt(tabs[3*j])+1) + ") and :" + tabs[3*j+1],
-							color: "#" + colors[j]
-						});
-					}
+				if (lines[i][3*j] != "-") {
+					seleStr.push("( " + lines[i][3*j] + " and :" + lines[i][3*j+1] + " )");
 				}
 			}
+			colorSele.push( ["#" + colors[j], seleStr.join(" or ")]);
+		}
+		colorSele.push(["lightgrey","*"]);
+		console.log(colorSele);
+		
+		var schemeId = NGL.ColorMakerRegistry.addSelectionScheme( colorSele, "CE-Symm {{structureId}}" );
+
+
+		stage.loadFile( "/pdb/{{structureId}}", { defaultRepresentation: false, ext:"pdb" } ).then( function( o ){
+			o.addRepresentation( "cartoon", { color: schemeId } );
 			o.addRepresentation( "ball+stick", {
 				sele: "hetero and not ( water )"
 			});
 			o.centerView();
 		} );
-	});
+		
+/* 		var schemeId = NGL.ColorMakerRegistry.addSelectionScheme( [
+            [ "red", "64-74 or 134-154 or 222-254 or 310-310 or 322-326" ],
+            [ "green", "311-322" ],
+            [ "yellow", "40-63 or 75-95 or 112-133 or 155-173 or 202-221 or 255-277 or 289-309" ],
+            [ "blue", "1-39 or 96-112 or 174-201 or 278-288" ],
+            [ "white", "*" ]
+        ], "Transmembrane 3dqb" );
+
+        stage.loadFile( "rcsb://3dqb.pdb" ).then( function( o ){
+            o.addRepresentation( "cartoon", { color: schemeId } );  // pass schemeId here
+            o.centerView();
+        } );
+ */	});
 } );
 
 </script>
