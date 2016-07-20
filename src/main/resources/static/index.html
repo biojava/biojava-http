@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>BioJava Webservices</title>
+<style type="text/css">
+body {
+	background: gray;
+}
+
+pre {
+	margin: 0px auto;
+	width: 100%;
+	border: solid #ccc 1px;
+	float: left;
+	padding: 10px;
+	position: relative;
+	z-index: 10;
+}
+
+pre:after {
+	background-color: #ccc;
+	content: '';
+	display: block;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 10px;
+	height: 100%;
+	z-index: -1;
+}
+
+#main {
+	max-width: 800px;
+	background: white;
+	margin: auto;
+	padding: 25px;
+}
+
+.route {
+	width: 100%;
+}
+
+.route td {
+	width: 50%;
+	padding-right: 25px;
+}
+.route td+td {
+	padding-left: 25px;
+}
+
+</style>
+</head>
+<body>
+	<div id="main">
+		<h1>BioJava Webservices</h1>
+		<p>
+			<a href="http://biojava.org">BioJava</a> is a powerful library of
+			bioinformatics tools, but leveraging BioJava from web interfaces is
+			challenging. This provides a number of APIs and pre-build interfaces
+			for accessing BioJava through the browser.
+		</p>
+		<h2>biojava-structure</h2>
+		<p>
+			BioJava understands and can automatically fetch a wide variety of
+			structure formats. In the following examples,
+			<tt>:id</tt>
+			can be replaced by any of the following:
+		<ul>
+			<li><b>PDB</b> PDB identifier, optionally followed by chain
+				and/or residue ranges. Examples: 4hhb, 4hhb.A, 4hhb.A:1-50.</li>
+			<li><b>SCOP</b> SCOPe domain. Example: d1h6w.2</li>
+			<li><b>PDP</b> Protein Domain Parser domain. Example: PDP:4HHBAa</li>
+			<li><b>CATH</b> Cath domains. Example: 1qvrC03</li>
+			<li><b>ECOD</b> ECOD domain. Example: e1lyw.1
+			<li><b>BIO</b> Biological assembly. Example: BIO:2ehz:1</li>
+		</ul>
+		</p>
+		<h3>Fetching structures</h3>
+		<p>
+		<table class="route">
+			<tr>
+				<td><pre>/pdb/:id</pre></td>
+				<td>Example: <a href="/pdb/1itb.A">/pdb/1itb.A</a></td>
+			</tr>
+			<tr>
+				<td><pre>/mmcif/:id</pre></td>
+				<td>Example: <a href="/mmcif/1itb.A">/mmcif/1itb.A</a></td>
+			</tr>
+		</table>
+		Returns the requested structure in PDB or mmCIF format.
+		</p>
+		<h3>Viewing structures</h3>
+		<p>
+		<table class="route">
+			<tr>
+				<td><pre>/ngl/:id</pre></td>
+				<td>Example: <a href="/ngl/1itb.A">/ngl/1itb.A</a></td>
+			</tr>
+		</table>
+		Views the requested structure using <a
+			href="https://github.com/arose/ngl">NGL</a>.
+		</p>
+		<h3>CE-Symm</h3>
+		<p>
+		<table class="route">
+			<tr>
+				<td><pre>/cesymm/:id</pre></td>
+				<td>Example: <a href="/cesymm/1itb.A">/cesymm/1itb.A</a></td>
+			</tr>
+		</table>
+		Analyze the structure for internal symmetry using <a
+			href="https://github.com/rcsb/symmetry">CE-Symm</a>.
+		</p>
+		<p>Information about the alignment is available in several
+			formats:
+		<table class="route">
+			<tr>
+				<td><pre>/cesymm/:id/pdb</pre></td>
+				<td>Example: <a href="/cesymm/1itb.A">/cesymm/1itb.A/pdb</a></td>
+			</tr>
+		</table>
+		PDB file with a superposition of the structure.
+		<table class="route">
+			<tr>
+				<td><pre>/cesymm/:id/json</pre></td>
+				<td>Example: <a href="/cesymm/1itb.A/json">/cesymm/1itb.A/json</a></td>
+			</tr>
+		</table>
+		JSON describing the alignment.
+		</p>
+	</div>
+</body>
+</html>

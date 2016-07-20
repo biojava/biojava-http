@@ -46,15 +46,17 @@ public class ServerMain {
 
 	public static void main(String[] args) {
 		port(8080);
-		
-		get("/", (r,r2) -> "BioJava HTTP");
+
+		staticFileLocation("/static");
+
+		// Document new routes in index.html
 
 		get(BioJavaRoutes.PDB, new PDBRoute());
 
 		get(BioJavaRoutes.MMCIF, new MMCIFRoute());
 
 		get(BioJavaRoutes.NGL, new NGLRoute(), new HandlebarsTemplateEngine());
-		
+
 		get(BioJavaRoutes.CESYMM, new CeSymmRoute(), new HandlebarsTemplateEngine());
 		get(BioJavaRoutes.CESYMM_JSON, new CeSymmResultRoute(),new JsonTransformer());
 		get(BioJavaRoutes.CESYMM_PDB, new CeSymmResultRoute() {
