@@ -3,18 +3,13 @@
 <head>
 	<meta charset='utf-8'>
 	<title>{{structureId}} CE-Symm Analysis: Multiple Superposition</title>
+	<script src='//code.jquery.com/jquery-1.11.0.min.js'></script>
+	<script src="{{url}}"></script>
 </head>
 <body>
 
 <h1>CE-Symm Analysis of {{structureId}}: Multiple Superposition</h1>
 
-<script src='//code.jquery.com/jquery-1.11.0.min.js'></script>
-
-<script src="{{url}}"></script>
-
-<script src="https://cdn.rawgit.com/google/palette.js/master/palette.js"></script>
-<!--script src="{{pallete_url}}"></script-->
-<script src="/js/ngl_ui.js"></script>
 <script>
 NGL.mainScriptFilePath = "{{url}}";
 var stage;
@@ -76,7 +71,32 @@ document.addEventListener( "DOMContentLoaded", function() {
 
 <div id="viewport" style="width: 100vw; height: 100vh; display:block;"></div>
 <div id="messages"></div>
-<p><a href="/cesymm/{{structureId}}">CE-Symm Alignment</a>
+<p><a href="/cesymm/{{structureId}}">CE-Symm Alignment</a></p>
+
+<script src="https://s3.eu-central-1.amazonaws.com/cdn.bio.sh/msa/latest/msa.min.gz.js"></script>
+<div id="msa">press "Run with JS"</div>
+
+<script>
+var opts = {
+	el: document.getElementById("msa"),
+	vis: {
+		conserv: false,
+		overviewbox: false
+	},
+	// smaller menu for JSBin
+	menu: "small",
+	bootstrapMenu: true
+};
+
+var m = new msa.msa(opts);
+m.u.file.importURL("/cesymm/{{structureId}}/fasta", function(){
+	m.render();
+});
+</script>
+<script src="https://cdn.rawgit.com/google/palette.js/master/palette.js"></script>
+<!--script src="{{pallete_url}}"></script-->
+<script src="/js/ngl_ui.js"></script>
+
 
 </body>
 </html>
