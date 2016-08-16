@@ -34,4 +34,5 @@ public class BioJavaRoutes {
 	public static String CESYMM_PDB = "/cesymm/:id/pdb";
 	public static String CESYMM_AXES = "/cesymm/:id/axes";
 	public static String CESYMM_TSV = "/cesymm/:id/tsv";
+	public static String CESYMM_FASTA = "/cesymm/:id/fasta";
 }

@@ -24,8 +24,11 @@
 
 package org.biojava.http;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.port;
+import static spark.Spark.staticFileLocation;
 
+import org.biojava.http.compute.CeSymmFastaTransformer;
 import org.biojava.http.compute.CeSymmPDBTransformer;
 import org.biojava.http.compute.CeSymmTSVTransformer;
 import org.biojava.http.compute.JsonTransformer;
@@ -69,5 +72,6 @@ public class ServerMain {
 			};
 		},new CeSymmPDBTransformer());
 		get(BioJavaRoutes.CESYMM_TSV, new CeSymmResultRoute(),new CeSymmTSVTransformer());
+		get(BioJavaRoutes.CESYMM_FASTA, new CeSymmResultRoute(),new CeSymmFastaTransformer());
 	}
 }
