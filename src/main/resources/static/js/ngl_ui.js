@@ -15,22 +15,22 @@ function default_keypress(stage, e) {
     }
     if (e !== undefined && e.key == "s") { // 115 is s
        console.log("s was pressed: small screenshot (1x)");
-       screenshot(1);
+       screenshot(stage,1);
     }
 
     if (e !== undefined && e.key == "m") { // 109 is m
        console.log("m was pressed: medium screenshot (2x)");
-       screenshot(2);
+       screenshot(stage,2);
     }
 
     if (e !== undefined && e.key == "l") { // 108 is l
        console.log("l was pressed: large screenshot (3x)");
-       screenshot(3);
+       screenshot(stage,3);
     }
 
     if (e !== undefined && e.key == "x") { // 120 is x
        console.log("x was pressed: xtra large screenshot (4x)");
-       screenshot(4);
+       screenshot(stage,4);
     }
 
 };
