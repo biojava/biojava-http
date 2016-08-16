@@ -74,7 +74,7 @@ document.addEventListener( "DOMContentLoaded", function() {
 <p><a href="/cesymm/{{structureId}}">CE-Symm Alignment</a></p>
 
 <script src="https://s3.eu-central-1.amazonaws.com/cdn.bio.sh/msa/latest/msa.min.gz.js"></script>
-<div id="msa">press "Run with JS"</div>
+<div id="msa">Loading Multiple Alignment...</div>
 
 <script>
 var opts = {
@@ -82,14 +82,27 @@ var opts = {
 	vis: {
 		conserv: false,
 		overviewbox: false
-	},
-	// smaller menu for JSBin
-	menu: "small",
-	bootstrapMenu: true
+	}
 };
 
 var m = new msa.msa(opts);
 m.u.file.importURL("/cesymm/{{structureId}}/fasta", function(){
+	/* Returns a dynamic color scheme function that colors letters by their row
+	 */
+	function repeatScheme(numrows){
+		var colors = palette('cb-Dark2', numrows);
+		return function(letter,opts) {
+			if(/[A-Z]/.exec(letter) && /[^a-z]/.exec(m.g.seqs.models[opts.y].attributes.seq[opts.pos]) ){
+				return "#"+colors[opts.y];
+				//return "#0f0";
+			} else {
+				return "#fff";
+			}
+		}
+	}
+	var numrows = m.g.seqs.length;
+	m.g.colorscheme.addDynScheme("Repeats", repeatScheme(numrows) );
+	m.g.colorscheme.set("scheme", "Repeats");
 	m.render();
 });
 </script>
