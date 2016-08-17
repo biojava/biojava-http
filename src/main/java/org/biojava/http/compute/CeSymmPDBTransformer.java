@@ -50,15 +50,21 @@ public class CeSymmPDBTransformer implements ResponseTransformer {
 		CeSymmResult result = (CeSymmResult) model;
 		
 		try {
-			MultipleAlignment multAln = result.getMultipleAlignment();
-			List<Atom[]> rotatedAtoms = MultipleAlignmentDisplay.getRotatedAtoms(multAln );
-			Structure artificial = MultipleAlignmentTools.toMultimodelStructure(multAln, rotatedAtoms);
+			Structure artificial = resultToStructure(result);
 			return artificial.toPDB();
 		} catch (StructureException e) {
 			logger.error("error rendering CeSymm PDB",e);
 			return null;
 		}
 
+	}
+
+	public static Structure resultToStructure(CeSymmResult result)
+			throws StructureException {
+		MultipleAlignment multAln = result.getMultipleAlignment();
+		List<Atom[]> rotatedAtoms = MultipleAlignmentDisplay.getRotatedAtoms(multAln );
+		Structure artificial = MultipleAlignmentTools.toMultimodelStructure(multAln, rotatedAtoms);
+		return artificial;
 	}
 
 }

@@ -58,7 +58,7 @@ public class MMCIFRoute implements Route {
 			}
 			String pdb = s.toMMCIF();
 			String filename = id+".cif";
-			response.header("Content-Type", "chemical/x-pdb");
+			response.type("chemical/x-pdb");
 			response.header("Content-Disposition", String.format("inline; filename=\"%s\"",filename));
 			return pdb;
 		} catch(StructureException e) {

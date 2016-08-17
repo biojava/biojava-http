@@ -27,11 +27,13 @@ package org.biojava.http;
 public class BioJavaRoutes {
 	public static String PDB = "/pdb/:id";
 	public static String MMCIF = "/mmcif/:id";
+	public static String MMTF = "/mmtf/:id";
 	public static String NGL = "/ngl/:id";
 	public static String CESYMM = "/cesymm/:id";
 	public static String CESYMM_MULTIPLE = "/cesymm/:id/multi";
 	public static String CESYMM_JSON = "/cesymm/:id/json";
 	public static String CESYMM_PDB = "/cesymm/:id/pdb";
+	public static String CESYMM_MMTF = "/cesymm/:id/mmtf";
 	public static String CESYMM_AXES = "/cesymm/:id/axes";
 	public static String CESYMM_TSV = "/cesymm/:id/tsv";
 	public static String CESYMM_FASTA = "/cesymm/:id/fasta";

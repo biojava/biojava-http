@@ -24,48 +24,46 @@
 
 package org.biojava.http.routes;
 
+import java.io.IOException;
+
 import org.biojava.http.BioJavaRoutes;
+import org.biojava.http.compute.CeSymmPDBTransformer;
 import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.StructureException;
-import org.biojava.nbio.structure.StructureIO;
+import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import spark.Request;
 import spark.Response;
-import spark.Route;
+import spark.Spark;
 
 /**
- * Handle requests for {@link BioJavaRoutes#PDB}
+ * Handle requests for {@link BioJavaRoutes#CESYMM_MMTF}
  * @author Spencer Bliven
  *
  */
-public class PDBRoute implements Route {
-	public static Logger logger = LoggerFactory.getLogger(PDBRoute.class);
+public class CeSymmMMTFRoute extends CeSymmResultRoute {
+	public static Logger logger = LoggerFactory.getLogger(CeSymmMMTFRoute.class);
 
 	@Override
-	public String handle(Request request, Response response) throws Exception {
-		String id = request.params(":id");
-		if(id == null) {
-			response.status(404);
-			return "No structure specified";
+	public CeSymmResult handle(Request request, Response response) {
+		CeSymmResult result = super.handle(request, response);
+		if(result == null) {
+			// Error should already be set
+			return null;
 		}
 		try {
-			Structure s = StructureIO.getStructure(id);
-			if(s == null) {
-				response.status(404);
-				return "Error fetching "+id;
-			}
-			String pdb = s.toPDB();
-			String filename = id+".pdb";
-			response.type("chemical/x-pdb");
-			response.header("Content-Disposition", String.format("inline; filename=\"%s\"",filename));
-			return pdb;
-		} catch(StructureException e) {
+			Structure s = CeSymmPDBTransformer.resultToStructure(result);
+			MMTFRoute.handleStructure(s, response);
+			return result; // body is set explicitly
+		} catch(StructureException | IOException e) {
 			logger.error("Error",e);
-			response.status(404);
-			return "Error fetching "+id;
+			String id = request.params(":id");
+			Spark.halt(404,"Error fetching "+id);
+			return null;
 		}
+
 	}
 
 }

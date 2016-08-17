@@ -24,48 +24,58 @@
 
 package org.biojava.http.routes;
 
+import java.io.IOException;
+
+import javax.servlet.ServletOutputStream;
+
 import org.biojava.http.BioJavaRoutes;
 import org.biojava.nbio.structure.Structure;
 import org.biojava.nbio.structure.StructureException;
 import org.biojava.nbio.structure.StructureIO;
+import org.biojava.nbio.structure.io.mmtf.MmtfActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.Spark;
 
 /**
- * Handle requests for {@link BioJavaRoutes#PDB}
+ * Handle requests for {@link BioJavaRoutes#MMTF}
  * @author Spencer Bliven
  *
  */
-public class PDBRoute implements Route {
-	public static Logger logger = LoggerFactory.getLogger(PDBRoute.class);
+public class MMTFRoute implements Route {
+	public static Logger logger = LoggerFactory.getLogger(MMTFRoute.class);
 
 	@Override
-	public String handle(Request request, Response response) throws Exception {
+	public String handle(Request request, Response response) {
 		String id = request.params(":id");
 		if(id == null) {
-			response.status(404);
-			return "No structure specified";
+			Spark.halt(404, "No structure specified" );
+			return null;
 		}
 		try {
 			Structure s = StructureIO.getStructure(id);
 			if(s == null) {
 				response.status(404);
-				return "Error fetching "+id;
+				return "Error fetching "+request;
 			}
-			String pdb = s.toPDB();
-			String filename = id+".pdb";
-			response.type("chemical/x-pdb");
-			response.header("Content-Disposition", String.format("inline; filename=\"%s\"",filename));
-			return pdb;
-		} catch(StructureException e) {
+			handleStructure(s, response);
+			return "200 OK"; // body is set explicitly
+		} catch(StructureException | IOException e) {
 			logger.error("Error",e);
-			response.status(404);
-			return "Error fetching "+id;
+			Spark.halt(404,"Error fetching "+id);
+			return null;
 		}
 	}
+	
+	public static void handleStructure( Structure s, Response response) throws IOException {
+		ServletOutputStream out = response.raw().getOutputStream();
+		MmtfActions.writeToOutputStream(s,out);
+		response.type( "application/octet-stream");
+	}
+
 
 }

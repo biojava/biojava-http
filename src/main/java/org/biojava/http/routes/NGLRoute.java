@@ -35,7 +35,7 @@ import spark.Response;
 import spark.TemplateViewRoute;
 
 /**
- * Handle requests for {@link BioJavaRoutes#MMCIF}
+ * Handle requests for {@link BioJavaRoutes#NGL}
  * @author Spencer Bliven
  *
  */
@@ -51,7 +51,7 @@ public class NGLRoute implements TemplateViewRoute {
 			return null;
 		}
 		try {
-			String structUrl = BioJavaRoutes.MMCIF.replace(":id", id);
+			String structUrl = BioJavaRoutes.MMTF.replace(":id", id);
 			NGLRouteParams params = new NGLRouteParams(id,structUrl);
 			return new ModelAndView(params, "ngl.html.hbs");
 		} catch(Exception e) {
@@ -60,5 +60,4 @@ public class NGLRoute implements TemplateViewRoute {
 			return null;
 		}
 	}
-
 }

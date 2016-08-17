@@ -87,8 +87,14 @@ pre:after {
 				<td><pre>/mmcif/:id</pre></td>
 				<td>Example: <a href="/mmcif/1itb.A">/mmcif/1itb.A</a></td>
 			</tr>
+			<tr>
+				<td><pre>/mmtf/:id</pre></td>
+				<td>Example: <a href="/mmtf/1itb.A">/mmtf/1itb.A</a></td>
+			</tr>
 		</table>
-		Returns the requested structure in PDB or mmCIF format.
+		Returns the requested structure in 
+		<a href="http://www.wwpdb.org/documentation/file-format-content/format33/v3.3.html">PDB</a>/
+		<a href="http://mmcif.wwpdb.org/">mmCIF</a>/<a href="http://mmtf.rcsb.org/">MMTF</a> format.
 		</p>
 		<h3>Viewing structures</h3>
 		<p>
@@ -130,6 +136,13 @@ pre:after {
 			</tr>
 		</table>
 		PDB file with a superposition of the structure.
+		<table class="route">
+			<tr>
+				<td><pre>/cesymm/:id/mmtf</pre></td>
+				<td>Example: <a href="/cesymm/1itb.A/mmtf">/cesymm/1itb.A/mmtf</a></td>
+			</tr>
+		</table>
+		MMTF file with a superposition of the structure.
 		<table class="route">
 			<tr>
 				<td><pre>/cesymm/:id/json</pre></td>

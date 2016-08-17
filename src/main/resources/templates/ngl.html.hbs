@@ -22,7 +22,7 @@
 
 		stage.setParameters({ backgroundColor:"white"} );
 
-		stage.loadFile( "/mmcif/{{structureId}}", { defaultRepresentation: false, ext:"cif" } ).then(function(o) {
+		stage.loadFile( "/mmtf/{{structureId}}", { defaultRepresentation: false, ext:"mmtf" } ).then(function(o) {
 			console.log("Loaded {{structureId}}");
 			defaultNGLRepr(o);
 			o.centerView();

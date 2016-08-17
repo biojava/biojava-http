@@ -59,7 +59,7 @@ document.addEventListener( "DOMContentLoaded", function() {
 		stage = new NGL.Stage( "viewport" );
 		stage.setParameters({ backgroundColor:"white" } );
 
-		stage.loadFile( "/pdb/{{structureId}}", { defaultRepresentation: false, ext:"pdb" } ).then( function( o ){
+		stage.loadFile( "/mmtf/{{structureId}}", { defaultRepresentation: false, ext:"mmtf" } ).then( function( o ){
 			o.addRepresentation( "cartoon", { color: schemeId } );
 			o.addRepresentation( "ball+stick", {
 				sele: "hetero and not ( water )"

@@ -32,9 +32,11 @@ import org.biojava.http.compute.CeSymmFastaTransformer;
 import org.biojava.http.compute.CeSymmPDBTransformer;
 import org.biojava.http.compute.CeSymmTSVTransformer;
 import org.biojava.http.compute.JsonTransformer;
+import org.biojava.http.routes.CeSymmMMTFRoute;
 import org.biojava.http.routes.CeSymmResultRoute;
 import org.biojava.http.routes.CeSymmRoute;
 import org.biojava.http.routes.MMCIFRoute;
+import org.biojava.http.routes.MMTFRoute;
 import org.biojava.http.routes.NGLRoute;
 import org.biojava.http.routes.PDBRoute;
 import org.biojava.nbio.structure.symmetry.internal.CeSymmResult;
@@ -53,11 +55,11 @@ public class ServerMain {
 
 		staticFileLocation("/static");
 
-		// Document new routes in index.html
+		// Document new routes in index.html!
 
 		get(BioJavaRoutes.PDB, new PDBRoute());
-
 		get(BioJavaRoutes.MMCIF, new MMCIFRoute());
+		get(BioJavaRoutes.MMTF, new MMTFRoute());
 
 		get(BioJavaRoutes.NGL, new NGLRoute(), new HandlebarsTemplateEngine());
 
@@ -71,7 +73,11 @@ public class ServerMain {
 				return result;
 			};
 		},new CeSymmPDBTransformer());
+		get(BioJavaRoutes.CESYMM_MMTF, new CeSymmMMTFRoute());
 		get(BioJavaRoutes.CESYMM_TSV, new CeSymmResultRoute(),new CeSymmTSVTransformer());
 		get(BioJavaRoutes.CESYMM_FASTA, new CeSymmResultRoute(),new CeSymmFastaTransformer());
+
+		// Gives 500 for me currently -SB, laptop, 2016-08-17
+		//RouteOverview.enableRouteOverview("/routes");
 	}
 }

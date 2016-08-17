@@ -35,7 +35,7 @@ import spark.Response;
 import spark.TemplateViewRoute;
 
 /**
- * Handle requests for {@link BioJavaRoutes#MMCIF}
+ * Handle requests for {@link BioJavaRoutes#CESYMM}
  * @author Spencer Bliven
  *
  */
@@ -59,7 +59,7 @@ public class CeSymmRoute implements TemplateViewRoute {
 			return null;
 		}
 		try {
-			String structUrl = BioJavaRoutes.CESYMM_PDB.replace(":id", id);
+			String structUrl = BioJavaRoutes.CESYMM_MMTF.replace(":id", id);
 			String jsonUrl = BioJavaRoutes.CESYMM_TSV.replace(":id", id);
 			CeSymmRouteParams params = new CeSymmRouteParams(id,structUrl,jsonUrl);
 			return new ModelAndView(params, template);

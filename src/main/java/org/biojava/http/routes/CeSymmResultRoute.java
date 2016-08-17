@@ -35,9 +35,10 @@ import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.Spark;
 
 /**
- * Handle requests for {@link BioJavaRoutes#MMCIF}
+ * Handle requests for {@link BioJavaRoutes#CESYMM} derivatives
  * @author Spencer Bliven
  *
  */
@@ -48,7 +49,7 @@ public class CeSymmResultRoute implements Route {
 	public CeSymmResult handle(Request request, Response response) {
 		String id = request.params(":id");
 		if(id == null) {
-			response.status(404);
+			Spark.halt(404,"Error fetching "+id);
 			logger.error("null id");
 			return null;
 		}
@@ -59,9 +60,8 @@ public class CeSymmResultRoute implements Route {
 			return result;
 		} catch(Exception e) {
 			logger.error("Error",e);
-			response.status(404);
+			Spark.halt(404,"Error fetching "+id);
 			return null;
 		}
 	}
-
 }
