@@ -50,3 +50,18 @@ function defaultNGLRepr(stage) {
     stage.addRepresentation("cartoon", {sele:""});
     stage.addRepresentation("ball+stick",{sele:"hetero and not ( water or ion )"});
 }
+
+/**
+ * Returns a dynamic color scheme function that colors letters by their row
+ */
+function repeatScheme(numrows){
+	var colors = palette('cb-Dark2', numrows);
+	return function(letter,opts) {
+		if(/[A-Z]/.exec(letter) && /[^a-z]/.exec(m.g.seqs.models[opts.y].attributes.seq[opts.pos]) ){
+			return "#"+colors[opts.y];
+			//return "#0f0";
+		} else {
+			return "#fff";
+		}
+	}
+}

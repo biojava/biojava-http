@@ -3,17 +3,18 @@
 <head>
 	<meta charset='utf-8'>
 	<title>{{structureId}} CE-Symm Analysis</title>
+	<script src='//code.jquery.com/jquery-1.11.0.min.js'></script>
+	<script src="{{url}}"></script>
 </head>
 <body>
 
 <h1>CE-Symm Analysis of {{structureId}}</h1>
 
-<script src='//code.jquery.com/jquery-1.11.0.min.js'></script>
+<div id="viewport" style="width: 100vw; height: 500px; display:block;"></div>
+<div id="messages"></div>
+<p><a href="/cesymm/{{structureId}}/multi">Multiple Superposition</a></p>
+<div id="msa">Loading Multiple Alignment...</div>
 
-<script src="{{url}}"></script>
-
-<script src="https://cdn.rawgit.com/google/palette.js/master/palette.js"></script>
-<!--script src="{{pallete_url}}"></script-->
 <script src="/js/ngl_ui.js"></script>
 <script>
 NGL.mainScriptFilePath = "{{url}}";
@@ -71,10 +72,27 @@ document.addEventListener( "DOMContentLoaded", function() {
 } );
 
 </script>
+<script src="https://cdn.bio.sh/msa/latest/msa.min.gz.js"></script>
 
-<div id="viewport" style="width: 100vw; height: 100vh; display:block;"></div>
-<div id="messages"></div>
-<p><a href="/cesymm/{{structureId}}/multi">Multiple Superposition</a>
-</p>
+<script src="https://cdn.rawgit.com/google/palette.js/master/palette.js"></script>
+<!--script src="{{pallete_url}}"></script-->
+<script>
+var opts = {
+	el: document.getElementById("msa"),
+	vis: {
+		conserv: false,
+		overviewbox: false
+	}
+};
+
+var m = new msa.msa(opts);
+m.u.file.importURL("/cesymm/{{structureId}}/fasta", function(){
+	var numrows = m.g.seqs.length;
+	m.g.colorscheme.addDynScheme("Repeats", repeatScheme(numrows) );
+	m.g.colorscheme.set("scheme", "Repeats");
+	m.render();
+});
+</script>
+
 </body>
 </html>

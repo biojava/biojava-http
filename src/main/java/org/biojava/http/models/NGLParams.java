@@ -31,6 +31,7 @@ public class NGLParams {
 	
 	public NGLParams(String structUrl) {
 		url = "https://cdn.rawgit.com/arose/ngl/v0.7.1a/js/build/ngl.embedded.min.js";
+		url = "https://rawgit.com/arose/ngl/master/dist/ngl.js";
 		this.structUrl = structUrl;
 		this.setSize(500);
 	}

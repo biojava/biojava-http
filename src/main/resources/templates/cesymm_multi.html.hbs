@@ -10,6 +10,12 @@
 
 <h1>CE-Symm Analysis of {{structureId}}: Multiple Superposition</h1>
 
+<div id="viewport" style="width: 100vw; height: 500px; display:block;"></div>
+<div id="messages"></div>
+<p><a href="/cesymm/{{structureId}}">CE-Symm Alignment</a></p>
+<div id="msa">Loading Multiple Alignment...</div>
+
+<script src="/js/ngl_ui.js"></script>
 <script>
 NGL.mainScriptFilePath = "{{url}}";
 var stage;
@@ -69,13 +75,11 @@ document.addEventListener( "DOMContentLoaded", function() {
 
 </script>
 
-<div id="viewport" style="width: 100vw; height: 100vh; display:block;"></div>
-<div id="messages"></div>
-<p><a href="/cesymm/{{structureId}}">CE-Symm Alignment</a></p>
 
 <script src="https://cdn.bio.sh/msa/latest/msa.min.gz.js"></script>
-<div id="msa">Loading Multiple Alignment...</div>
 
+<script src="https://cdn.rawgit.com/google/palette.js/master/palette.js"></script>
+<!--script src="{{pallete_url}}"></script-->
 <script>
 var opts = {
 	el: document.getElementById("msa"),
@@ -87,28 +91,12 @@ var opts = {
 
 var m = new msa.msa(opts);
 m.u.file.importURL("/cesymm/{{structureId}}/fasta", function(){
-	/* Returns a dynamic color scheme function that colors letters by their row
-	 */
-	function repeatScheme(numrows){
-		var colors = palette('cb-Dark2', numrows);
-		return function(letter,opts) {
-			if(/[A-Z]/.exec(letter) && /[^a-z]/.exec(m.g.seqs.models[opts.y].attributes.seq[opts.pos]) ){
-				return "#"+colors[opts.y];
-				//return "#0f0";
-			} else {
-				return "#fff";
-			}
-		}
-	}
 	var numrows = m.g.seqs.length;
 	m.g.colorscheme.addDynScheme("Repeats", repeatScheme(numrows) );
 	m.g.colorscheme.set("scheme", "Repeats");
 	m.render();
 });
 </script>
-<script src="https://cdn.rawgit.com/google/palette.js/master/palette.js"></script>
-<!--script src="{{pallete_url}}"></script-->
-<script src="/js/ngl_ui.js"></script>
 
 
 </body>
