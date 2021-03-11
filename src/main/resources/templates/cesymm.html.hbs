@@ -36,10 +36,10 @@ document.addEventListener( "DOMContentLoaded", function() {
 		if( lines.length > 0) {
 			// Get number of structures from first line
 			var n_strucs = (lines[0].length - 1) / 3;
-	
+
 			// Generate color palette
 			var colors = palette('cb-Dark2', n_strucs);
-	
+
 			// Create selection for each repeat
 			for (j = 0; j < n_strucs; j++) {
 				var seleStr = [];
@@ -55,6 +55,7 @@ document.addEventListener( "DOMContentLoaded", function() {
 		}
 		colorSele.push(["lightgrey","*"]);
 
+		// Note future NGL versions may rename to NGL.ColormakerRegistry
 		var schemeId = NGL.ColorMakerRegistry.addSelectionScheme( colorSele, "CE-Symm {{structureId}}" );
 
 		stage = new NGL.Stage( "viewport" );
@@ -72,9 +73,9 @@ document.addEventListener( "DOMContentLoaded", function() {
 } );
 
 </script>
-<script src="https://cdn.bio.sh/msa/latest/msa.min.gz.js"></script>
+<script src="//s3.eu-central-1.amazonaws.com/cdn.bio.sh/msa/1.0/msa.min.gz.js"></script>
 
-<script src="https://cdn.rawgit.com/google/palette.js/master/palette.js"></script>
+<script src="//cdn.jsdelivr.net/gh/google/palette.js@master/palette.js"></script>
 <!--script src="{{pallete_url}}"></script-->
 <script>
 var opts = {

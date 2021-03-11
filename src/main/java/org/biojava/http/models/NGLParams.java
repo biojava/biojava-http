@@ -18,24 +18,23 @@
  *      http://www.biojava.org/
  *
  * Created on Jul 6, 2016
- * Author: blivens 
+ * Author: blivens
  *
  */
- 
+
 package org.biojava.http.models;
- 
+
 public class NGLParams {
 	private String url;
 	private String structUrl;
 	private int size;
-	
+
 	public NGLParams(String structUrl) {
-		url = "https://cdn.rawgit.com/arose/ngl/v0.7.1a/js/build/ngl.embedded.min.js";
-		url = "https://rawgit.com/arose/ngl/master/dist/ngl.js";
+		url = "//cdn.jsdelivr.net/gh/nglviewer/ngl@v0.9.3/dist/ngl.js";
 		this.structUrl = structUrl;
 		this.setSize(500);
 	}
-	
+
 	public String getUrl() {
 		return url;
 	}
